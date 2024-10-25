@@ -1,0 +1,35 @@
+﻿<?php
+session_start();
+
+if (isset($_POST['rating'])) {
+    $rating = $_POST['rating'];
+    $user_ip = $_SERVER['REMOTE_ADDR']; // الحصول على عنوان IP الخاص بالمستخدم
+
+    // تحقق مما إذا كان المستخدم قد قيم من قبل بناءً على عنوان IP أو جلسة معينة
+    if (isset($_SESSION['rated']) && $_SESSION['rated'] === true) {
+        echo "لقد قمت بالتقييم مسبقًا.";
+    } else {
+        // حفظ التقييم في قاعدة البيانات
+        /*
+        $conn = new mysqli('localhost', 'username', 'password', 'database');
+        if ($conn->connect_error) {
+            die("فشل الاتصال بقاعدة البيانات: " . $conn->connect_error);
+        }
+
+        $sql = "INSERT INTO ratings (rating, ip_address) VALUES ('$rating', '$user_ip')";
+        if ($conn->query($sql) === TRUE) {
+            echo "تم حفظ التقييم بنجاح";
+        } else {
+            echo "خطأ: " . $conn->error;
+        }
+
+        $conn->close();
+        */
+
+        // تعيين الجلسة لتجنب التكرار
+        $_SESSION['rated'] = true;
+    }
+} else {
+    echo "لم يتم استلام أي تقييم.";
+}
+?>
