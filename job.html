@@ -1,0 +1,316 @@
+﻿
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>التقدم لوظيفه</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Amiri';
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+            text-align: center;
+            direction: ltr;
+            background-image: url('job.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        @font-face {
+            font-family: 'Amiri';
+            src: url('Amiri-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        h1 {
+            color: white;
+            margin-top: 150px;
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-align: right;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        input[type="file"] {
+            padding: 3px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #1b9f4b;
+        }
+        header {
+            width: 100%;
+            background-color: #e0f2ff;
+            position: fixed;
+            top: 0;
+            z-index: 2;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+        }
+        .logo {
+            width: 10vw;
+            height: auto;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links li a {
+            color: green;
+            text-decoration: none;
+            font-size: 2rem;
+        }
+        .nav-links li a:hover {
+            text-decoration: underline;
+            color: #e6f766;
+        }
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .menu-toggle .bar {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            margin: 4px 0;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 60px;
+                right: 0;
+                background-color: #e0f2ff;
+                flex-direction: column;
+                width: 200px;
+                padding: 2rem;
+                display: none;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+        }
+        .fixed-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .button {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .button img {
+            width: 90%;
+            height: auto;
+        }
+        .whatsapp-button { background-color: #25d366; }
+        .call-button { background-color: #007bff; }
+        @media (max-width: 768px) {
+            .button {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        #progress-container {
+            display: none;
+            margin: 10px auto;
+            width: 90%;
+            max-width: 400px;
+        }
+        #progress-bar {
+            height: 10px;
+            width: 0%;
+            background-color: #25d366;
+            border-radius: 5px;
+            transition: width 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html"><img src="logo.png" alt="Logo" class="logo"></a>
+            <div class="menu-toggle" id="menu-toggle">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#section6">المعامل</a></li>
+                <li><a href="job.html">للوظائف</a></li>
+               
+ <li><a href="#section4">الرعاية المنزلية</a></li>
+                <li><a href="#section3">لطلب الخدمة</a></li>
+                <li><a href="#section2">خدماتنا</a></li>
+                <li><a href="index.html">الرئيسية</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="fixed-buttons">
+        <a href="https://wa.me/201155915415" target="_blank" class="button whatsapp-button"><img src="whats.png" alt="واتساب"></a>
+        <a href="tel:+201155915415" class="button call-button"><img src="call.png" alt="مكالمة"></a>
+    </div>
+
+    <div style="margin-top:180px;">
+        <h1>إرسال بيانات التوظيف إلى واتساب</h1>
+    </div>
+
+    <form id="contactForm">
+        <label for="name">الإسم:</label>
+        <input type="text" id="name" placeholder="اكتب أسمك زي البطاقه الشخصيه بالظبط">
+        <label for="email">العنوان:</label>
+        <input type="text" id="email" placeholder="المنطقه الي انت موجود فيها حالياا ">
+        <label for="phone">رقم الهاتف:</label>
+        <input type="tel" id="phone" placeholder="أدخل رقمك">
+        <label for="address">المؤهل:</label>
+        <input type="text" id="address" placeholder="المؤهل الدراسي">
+        <label for="qualification">الوظيفة:</label>
+        <input type="text" id="qualification" placeholder="الوظيفه التي ترغب بالتقدم بها">
+        <label for="upload">الاوراق المطلوبه للتمريض (صوره مزاوله المهنه-كارنيه النقابه-شهاده التخرج - البطابقه الشخصيه )
+
+<p> ألأوراق المطلوبه لمساعدي التمريض والبابي سيتر وأخري (صوره سيلفي وانت ماسك البطاقه الشخصيه في ايدك - صوره للمؤهل الدراسي - فيديو وانت بتقلب البطاقه الشخصيه من الضهر للوجه)</p></label>
+        <input type="file" id="upload" multiple accept="image/*,video/*">
+        <div id="progress-container">
+            <div style="height: 10px; background-color: #ddd; border-radius: 5px;">
+                <div id="progress-bar"></div>
+            </div>
+            <p id="progress-text" style="font-size: 14px; color: #333; margin-top: 5px;">0%</p>
+        </div>
+        <button type="button" onclick="sendData()">إرسال</button>
+    </form>
+
+    <script>
+        const menuToggle = document.getElementById("menu-toggle");
+        const navLinks = document.getElementById("nav-links");
+        menuToggle.addEventListener("click", () => {
+            menuToggle.classList.toggle("toggle");
+            navLinks.classList.toggle("show");
+        });
+
+        let isUploading = false;
+        function sendData() {
+            if (isUploading) return;
+            isUploading = true;
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const qualification = document.getElementById('qualification').value.trim();
+            const files = document.getElementById('upload').files;
+
+            if (!name || !email || !phone || !address || !qualification || files.length === 0) {
+                alert("يرجى تعبئة جميع الحقول ورفع الملفات.");
+                isUploading = false;
+                return;
+            }
+
+            let totalSize = 0;
+            for (let file of files) totalSize += file.size;
+            if (totalSize > 50 * 1024 * 1024) {
+                alert("⚠️ الحد الأقصى للرفع هو 50 ميغا.");
+                isUploading = false;
+                return;
+            }
+
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            document.getElementById('progress-container').style.display = 'block';
+
+            let uploaded = 0;
+            const total = files.length;
+
+            const sendToWhatsApp = () => {
+                const msg = `مرحبا،%0Aالاسم: ${name}%0Aالعنوان: ${email}%0Aالهاتف: ${phone}%0Aالمؤهل: ${address}%0Aالوظيفة: ${qualification}`;
+                const link = `https://wa.me/201155915415?text=${msg}`;
+                window.open(link, '_blank');
+                isUploading = false;
+            };
+
+            for (let i = 0; i < total; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function () {
+                    const base64 = reader.result.split(',')[1];
+                    fetch('https://script.google.com/macros/s/AKfycbwphj8TPiRS6i-HBrXfM2HvXUtU8HOdRfXYoTTEz2jf86GDwa-xHWovaPgBIQ8OzuwMOA/exec', {
+                        method: 'POST',
+                        body: new URLSearchParams({
+                            'name': name,
+                            'filename': file.name,
+                            'file': base64,
+                            'mimeType': file.type
+                        })
+                    })
+                    .then(() => {
+                        uploaded++;
+                        const percent = Math.round((uploaded / total) * 100);
+                        progressBar.style.width = percent + '%';
+                        progressText.textContent = percent + '%';
+                        if (uploaded === total) {
+                            alert("✅ تم رفع الملفات");
+                            sendToWhatsApp();
+                        }
+                    })
+                    .catch(() => {
+                        uploaded++;
+                        if (uploaded === total) {
+                            alert("⚠️ تم رفع الملفات جزئيًا");
+                            sendToWhatsApp();
+                        }
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
