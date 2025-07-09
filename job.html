@@ -1,4 +1,3 @@
-﻿
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -58,6 +57,7 @@
         button {
             width: 100%;
             padding: 10px;
+            margin-top: 10px;
             background-color: #25d366;
             color: white;
             border: none;
@@ -66,7 +66,11 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        button:hover {
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        button:hover:not(:disabled) {
             background-color: #1b9f4b;
         }
         header {
@@ -173,6 +177,12 @@
             border-radius: 5px;
             transition: width 0.4s;
         }
+        #upload-message {
+            color: green;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -185,8 +195,7 @@
             <ul class="nav-links" id="nav-links">
                 <li><a href="#section6">المعامل</a></li>
                 <li><a href="job.html">للوظائف</a></li>
-               
- <li><a href="#section4">الرعاية المنزلية</a></li>
+                <li><a href="#section4">الرعاية المنزلية</a></li>
                 <li><a href="#section3">لطلب الخدمة</a></li>
                 <li><a href="#section2">خدماتنا</a></li>
                 <li><a href="index.html">الرئيسية</a></li>
@@ -214,17 +223,20 @@
         <input type="text" id="address" placeholder="المؤهل الدراسي">
         <label for="qualification">الوظيفة:</label>
         <input type="text" id="qualification" placeholder="الوظيفه التي ترغب بالتقدم بها">
-        <label for="upload">الاوراق المطلوبه للتمريض (صوره مزاوله المهنه-كارنيه النقابه-شهاده التخرج - صوره وش وضهر للبطاقه الشخصيه -شهاده خبره ان وجد )
-
-<p> ألأوراق المطلوبه لمساعدي التمريض والبابي سيتر وأخري (صوره وش وضهر للبطاقه الشخصيه - صوره للمؤهل الدراسي - فيديو وانت بتقلب البطاقه الشخصيه من الضهر للوجه -شهاده خبره ان وجد )</p></label>
+        <label for="upload">الاوراق المطلوبة:</label>
         <input type="file" id="upload" multiple accept="image/*,video/*">
+
         <div id="progress-container">
             <div style="height: 10px; background-color: #ddd; border-radius: 5px;">
                 <div id="progress-bar"></div>
             </div>
             <p id="progress-text" style="font-size: 14px; color: #333; margin-top: 5px;">0%</p>
         </div>
-        <button type="button" onclick="sendData()">إرسال</button>
+
+        <p id="upload-message">✅ تم رفع الملفات بنجاح. يمكنك الآن إرسال البيانات إلى واتساب.</p>
+
+        <button type="button" onclick="uploadFiles()">رفع الملفات</button>
+        <button type="button" onclick="sendToWhatsApp()" id="sendBtn" disabled>إرسال البيانات إلى واتساب</button>
     </form>
 
     <script>
@@ -236,19 +248,19 @@
         });
 
         let isUploading = false;
-        function sendData() {
+        let uploadCompleted = false;
+
+        function uploadFiles() {
             if (isUploading) return;
             isUploading = true;
+            uploadCompleted = false;
 
+            document.getElementById("upload-message").style.display = "none";
             const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const address = document.getElementById('address').value.trim();
-            const qualification = document.getElementById('qualification').value.trim();
             const files = document.getElementById('upload').files;
 
-            if (!name || !email || !phone || !address || !qualification || files.length === 0) {
-                alert("يرجى تعبئة جميع الحقول ورفع الملفات.");
+            if (!name || files.length === 0) {
+                alert("يرجى كتابة الاسم ورفع الملفات.");
                 isUploading = false;
                 return;
             }
@@ -267,13 +279,6 @@
 
             let uploaded = 0;
             const total = files.length;
-
-            const sendToWhatsApp = () => {
-                const msg = `مرحبا،%0Aالاسم: ${name}%0Aالعنوان: ${email}%0Aالهاتف: ${phone}%0Aالمؤهل: ${address}%0Aالوظيفة: ${qualification}`;
-                const link = `https://wa.me/201155915415?text=${msg}`;
-                window.open(link, '_blank');
-                isUploading = false;
-            };
 
             for (let i = 0; i < total; i++) {
                 const file = files[i];
@@ -295,21 +300,49 @@
                         const percent = Math.round((uploaded / total) * 100);
                         progressBar.style.width = percent + '%';
                         progressText.textContent = percent + '%';
+
                         if (uploaded === total) {
-                            alert("✅ تم رفع الملفات");
-                            sendToWhatsApp();
+                            document.getElementById("upload-message").style.display = "block";
+                            document.getElementById("sendBtn").disabled = false;
+                            uploadCompleted = true;
+                            isUploading = false;
                         }
                     })
                     .catch(() => {
                         uploaded++;
                         if (uploaded === total) {
-                            alert("⚠️ تم رفع الملفات جزئيًا");
-                            sendToWhatsApp();
+                            alert("⚠️ تم رفع الملفات جزئيًا.");
+                            document.getElementById("upload-message").style.display = "block";
+                            document.getElementById("sendBtn").disabled = false;
+                            uploadCompleted = true;
+                            isUploading = false;
                         }
                     });
                 };
                 reader.readAsDataURL(file);
             }
+        }
+
+        function sendToWhatsApp() {
+            if (!uploadCompleted) {
+                alert("⚠️ يجب رفع الملفات أولًا.");
+                return;
+            }
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const qualification = document.getElementById('qualification').value.trim();
+
+            if (!name || !email || !phone || !address || !qualification) {
+                alert("يرجى تعبئة جميع البيانات.");
+                return;
+            }
+
+            const msg = `مرحبا،%0Aالاسم: ${name}%0Aالعنوان: ${email}%0Aالهاتف: ${phone}%0Aالمؤهل: ${address}%0Aالوظيفة: ${qualification}`;
+            const link = `https://wa.me/201155915415?text=${msg}`;
+            window.open(link, '_blank');
         }
     </script>
 </body>
